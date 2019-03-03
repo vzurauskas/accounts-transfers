@@ -39,6 +39,7 @@ public final class JooqAccount implements Account {
     @Override
     public JsonNode json() {
         ObjectNode account = mapper.objectNode();
+        account.put("id", id.toString());
         account.put("iban", iban());
         return account;
     }
