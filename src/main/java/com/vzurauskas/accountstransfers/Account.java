@@ -8,6 +8,7 @@ import java.util.stream.Stream;
 
 public interface Account {
     UUID id();
+    String iban();
     Transfer debit(Account creditor, BigDecimal amount, String currency);
     Stream<Transaction> transactions();
     JsonNode json();

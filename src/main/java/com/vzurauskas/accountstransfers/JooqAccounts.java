@@ -24,7 +24,24 @@ public final class JooqAccounts implements Accounts {
     }
 
     @Override
-    public Account find(UUID id) {
+    public Account byId(UUID id) {
         return new JooqAccount(id, db);
+    }
+
+    @Override
+    public Account byIban(String iban) {
+        return db
+            .select()
+            .from("ACCOUNT")
+            .where(DSL.field("ACCOUNT.IBAN").eq(iban))
+            .fetch().stream()
+            .findFirst()
+            .map(
+                record -> new SimpleAccount(
+                    new JooqAccount(record.get("ID", UUID.class), db),
+                    record.get("IBAN").toString(),
+                    record.get("CURRENCY").toString()
+                )
+            ).orElseThrow(() -> new IllegalArgumentException("No account with iban=" + iban));
     }
 }

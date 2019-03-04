@@ -4,5 +4,6 @@ import java.util.UUID;
 
 public interface Accounts {
     Account add(String iban, String currency);
-    Account find(UUID id);
+    Account byId(UUID id);
+    Account byIban(String iban);
 }

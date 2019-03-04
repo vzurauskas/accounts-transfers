@@ -14,6 +14,10 @@ public final class Amount {
     private final BigDecimal amount;
     private final String currency;
 
+    public Amount(JsonNode json) {
+        this(new BigDecimal(json.get("amount").textValue()), json.get("currency").textValue());
+    }
+
     public Amount(BigDecimal amount, String currency) {
         this.amount = amount;
         this.currency = currency;

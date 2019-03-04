@@ -1,5 +1,8 @@
 package com.vzurauskas.accountstransfers;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
+
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
@@ -13,6 +16,7 @@ public final class JooqTransfer implements Transfer {
     private static final UncheckedMapper mapper = new UncheckedMapper();
 
     private final DSLContext db;
+    private final UUID id;
     private final Account debtor;
     private final Account creditor;
     private final BigDecimal amount;
@@ -20,6 +24,7 @@ public final class JooqTransfer implements Transfer {
 
     public JooqTransfer(DSLContext db, Account debtor, Account creditor, BigDecimal amount, String currency) {
         this.db = db;
+        this.id = UUID.randomUUID();
         this.debtor = debtor;
         this.creditor = creditor;
         this.amount = amount;
@@ -37,7 +42,17 @@ public final class JooqTransfer implements Transfer {
                 DSL.field("CREDITOR"),
                 DSL.field("AMOUNT"),
                 DSL.field("CURRENCY"))
-            .values(UUID.randomUUID(), OffsetDateTime.now(), debtor.id(), creditor.id(), amount, currency)
+            .values(id, OffsetDateTime.now(), debtor.id(), creditor.id(), amount, currency)
             .execute();
+    }
+
+    @Override
+    public JsonNode json() {
+        ObjectNode transfer = mapper.objectNode();
+        transfer.put("id", id.toString());
+        transfer.put("debtor", debtor.iban());
+        transfer.put("creditor", creditor.iban());
+        transfer.set("instructedAmount", new Amount(amount, currency).json());
+        return transfer;
     }
 }

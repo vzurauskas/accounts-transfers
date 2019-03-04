@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory;
 
 import com.vzurauskas.accountstransfers.http.GetAccount;
 import com.vzurauskas.accountstransfers.http.PostAccount;
+import com.vzurauskas.accountstransfers.http.PostTransfer;
 import org.jooq.DSLContext;
 import org.takes.Response;
 import org.takes.facets.fallback.Fallback;
@@ -34,19 +35,10 @@ public final class App {
         new FtBasic(
             new TkFallback(
                 new TkFork(
-                    new FkRegex("/", "Accounts and Transactions"),
-                    new FkRegex(
-                        "/accounts",
-                        new TkFork(
-                            new FkMethods("POST", new PostAccount(accounts))
-                        )
-                    ),
-                    new FkRegex(
-                        "/accounts/.+",
-                        new TkFork(
-                            new FkMethods("GET", new GetAccount(accounts))
-                        )
-                    )
+                    new FkRegex("/", "Accounts and Transfers"),
+                    new FkRegex("/accounts", new TkFork(new FkMethods("POST", new PostAccount(accounts)))),
+                    new FkRegex("/accounts/.+", new TkFork(new FkMethods("GET", new GetAccount(accounts)))),
+                    new FkRegex("/transfers", new TkFork(new FkMethods("POST", new PostTransfer(accounts))))
                 ),
                 fallback()
             ),

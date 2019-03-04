@@ -34,7 +34,7 @@ public final class GetAccount implements Take {
         return new RsJson(
             new RsWithBody(
                 mapper.bytes(
-                    new AccountWithBalance(accounts.find(id(uri))).json()
+                    new AccountWithBalance(accounts.byId(id(uri))).json()
                 )
             )
         );

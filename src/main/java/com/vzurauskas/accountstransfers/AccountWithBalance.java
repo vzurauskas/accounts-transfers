@@ -23,6 +23,11 @@ public final class AccountWithBalance implements Account {
     }
 
     @Override
+    public String iban() {
+        return origin.iban();
+    }
+
+    @Override
     public Transfer debit(Account creditor, BigDecimal amount, String currency) {
         return origin.debit(creditor, amount, currency);
     }

@@ -29,6 +29,11 @@ public final class JooqAccount implements Account {
     }
 
     @Override
+    public String iban() {
+        return record().get("IBAN").toString();
+    }
+
+    @Override
     public Transfer debit(Account creditor, BigDecimal amount, String currency) {
         return new JooqTransfer(db, this, creditor, amount, currency);
     }
@@ -39,6 +44,7 @@ public final class JooqAccount implements Account {
             .select()
             .from("TRANSFER")
             .where(DSL.field("TRANSFER.DEBTOR").eq(id))
+            .or(DSL.field("TRANSFER.CREDITOR").eq(id))
             .fetch().stream()
             .map(
                 record -> new SimpleTransaction(

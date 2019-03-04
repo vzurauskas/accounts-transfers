@@ -22,10 +22,18 @@ public final class FakeAccounts implements Accounts {
     }
 
     @Override
-    public Account find(UUID id) {
+    public Account byId(UUID id) {
         return accounts.stream()
             .filter(account -> account.id().equals(id))
             .findFirst()
             .orElseThrow(() -> new IllegalArgumentException("No account with id=" + id));
+    }
+
+    @Override
+    public Account byIban(String iban) {
+        return accounts.stream()
+            .filter(account -> account.iban().equals(iban))
+            .findFirst()
+            .orElseThrow(() -> new IllegalArgumentException("No account with id=" + iban));
     }
 }
