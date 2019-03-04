@@ -7,14 +7,16 @@ import java.util.UUID;
 public final class FakeAccounts implements Accounts {
 
     private final List<Account> accounts;
+    private final FakeTransfers transfers;
 
     public FakeAccounts() {
         this.accounts = new LinkedList<>();
+        this.transfers = new FakeTransfers();
     }
 
     @Override
-    public Account add(String iban) {
-        Account account = new SimpleAccount(UUID.randomUUID(), iban);
+    public Account add(String iban, String currency) {
+        Account account = new FakeAccount(UUID.randomUUID(), iban, currency, transfers);
         accounts.add(account);
         return account;
     }

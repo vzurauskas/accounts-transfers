@@ -38,8 +38,20 @@ public final class Database {
         context.createTableIfNotExists("ACCOUNT")
             .column("ID", SQLDataType.UUID)
             .column("IBAN", SQLDataType.VARCHAR.length(34).nullable(false))
+            .column("CURRENCY", SQLDataType.VARCHAR.length(8).nullable(false))
             .constraints(
                 DSL.constraint("PK_ACCOUNT").primaryKey("ID")
+            )
+            .execute();
+        context.createTableIfNotExists("TRANSFER")
+            .column("ID", SQLDataType.UUID)
+            .column("TIMESTAMP", SQLDataType.TIMESTAMP)
+            .column("DEBTOR", SQLDataType.UUID)
+            .column("CREDITOR", SQLDataType.UUID)
+            .column("AMOUNT", SQLDataType.DECIMAL)
+            .column("CURRENCY", SQLDataType.VARCHAR(8))
+            .constraints(
+                DSL.constraint("PK_TRANSFER").primaryKey("ID")
             )
             .execute();
     }

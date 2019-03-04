@@ -1,4 +1,4 @@
-package com.vzurauskas.accountstransfers.web;
+package com.vzurauskas.accountstransfers.http;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -19,12 +19,19 @@ final class GetAccountTest {
     private final Accounts accounts = new FakeAccounts();
 
     @Test
-    void getsAccount() throws IOException {
-        Account account = accounts.add("DE89370400440532666000");
+    void getsAccountWithNoTransactions() throws IOException {
+        Account account = accounts.add("DE89370400440532666000", "EUR");
         assertEquals(
             mapper.objectNode()
                 .put("id", account.id().toString())
-                .put("iban", "DE89370400440532666000"),
+                .put("iban", "DE89370400440532666000")
+                .put("currency", "EUR")
+                .set(
+                    "balance",
+                    mapper.objectNode()
+                        .put("amount", "0.00")
+                        .put("currency", "EUR")
+                ),
             mapper.json(
                 new GetAccount(accounts).act(
                     new RqFake(

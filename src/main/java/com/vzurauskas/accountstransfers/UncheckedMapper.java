@@ -33,7 +33,7 @@ public final class UncheckedMapper {
         }
     }
 
-    public CharSequence text(JsonNode node) {
+    public CharSequence string(JsonNode node) {
         try {
             return mapper.writeValueAsString(node);
         } catch (JsonProcessingException e) {

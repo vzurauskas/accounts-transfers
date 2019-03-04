@@ -1,4 +1,6 @@
-package com.vzurauskas.accountstransfers.web;
+package com.vzurauskas.accountstransfers.http;
+
+import com.fasterxml.jackson.databind.JsonNode;
 
 import java.io.IOException;
 import java.util.Optional;
@@ -7,6 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.vzurauskas.accountstransfers.Account;
+import com.vzurauskas.accountstransfers.AccountWithBalance;
 import com.vzurauskas.accountstransfers.Accounts;
 import com.vzurauskas.accountstransfers.UncheckedMapper;
 import org.takes.Body;
@@ -32,8 +35,9 @@ public final class PostAccount implements Take {
     @Override
     public Response act(Request req) throws IOException {
         log.info("POST /accounts");
+        Body body = new RqGreedy(req);
         return response(accounts.add(
-            iban(new RqGreedy(req)))
+            text(body, "iban"), text(body, "currency"))
         );
     }
 
@@ -41,7 +45,9 @@ public final class PostAccount implements Take {
         return new RsWithType(
             new RsWithStatus(
                 new RsWithBody(
-                    mapper.bytes(account.json())
+                    mapper.bytes(
+                        new AccountWithBalance(account).json()
+                    )
                 ),
                 201
             ),
@@ -49,11 +55,10 @@ public final class PostAccount implements Take {
         );
     }
 
-    private String iban(Body req) throws IOException {
-        return Optional.ofNullable(
-            mapper.json(
-                req.body()
-            ).get("iban").textValue()
-        ).orElseThrow(() -> new IllegalArgumentException("Bad request - no 'iban'."));
+    private String text(Body req, String name) throws IOException {
+        return Optional.ofNullable(mapper.json(req.body()).get(name))
+            .filter(JsonNode::isTextual)
+            .map(JsonNode::textValue)
+            .orElseThrow(() -> new IllegalArgumentException("Bad request - no '" + name + "'."));
     }
 }

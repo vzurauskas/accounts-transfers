@@ -3,7 +3,6 @@ package com.vzurauskas.accountstransfers;
 import java.util.UUID;
 
 import org.jooq.DSLContext;
-import org.jooq.Record;
 import org.jooq.impl.DSL;
 
 public final class JooqAccounts implements Accounts {
@@ -15,11 +14,11 @@ public final class JooqAccounts implements Accounts {
     }
 
     @Override
-    public Account add(String iban) {
+    public Account add(String iban, String currency) {
         UUID id = UUID.randomUUID();
         db
-            .insertInto(DSL.table("ACCOUNT"), DSL.field("ID"), DSL.field("IBAN"))
-            .values(id, iban)
+            .insertInto(DSL.table("ACCOUNT"), DSL.field("ID"), DSL.field("IBAN"), DSL.field("CURRENCY"))
+            .values(id, iban, currency)
             .execute();
         return new JooqAccount(id, db);
     }

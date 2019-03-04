@@ -1,4 +1,4 @@
-package com.vzurauskas.accountstransfers.web;
+package com.vzurauskas.accountstransfers.http;
 
 import java.io.IOException;
 import java.util.UUID;
@@ -6,6 +6,7 @@ import java.util.UUID;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.vzurauskas.accountstransfers.AccountWithBalance;
 import com.vzurauskas.accountstransfers.Accounts;
 import com.vzurauskas.accountstransfers.UncheckedMapper;
 import org.takes.Request;
@@ -33,7 +34,7 @@ public final class GetAccount implements Take {
         return new RsJson(
             new RsWithBody(
                 mapper.bytes(
-                    accounts.find(id(uri)).json()
+                    new AccountWithBalance(accounts.find(id(uri))).json()
                 )
             )
         );
