@@ -27,6 +27,17 @@ import org.takes.rs.RsText;
 
 public final class App {
 
+    // TODO: readme
+    // TODO: idempotency
+    // TODO: separate logic from sql, test real json()
+    // TODO: validations
+    // TODO: caching
+    // TODO: indices
+    // TODO: packages
+    // TODO: unit tests
+    // TODO: error handling
+    // TODO: DB
+
     private static final Logger log = LoggerFactory.getLogger(App.class);
 
     public static void main(final String... args) throws SQLException, IOException {
