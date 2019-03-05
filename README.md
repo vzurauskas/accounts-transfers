@@ -18,4 +18,4 @@ This will start the server on port 8080 and the root URI will be http://localhos
 ## Technology stack
 Takes framework - https://github.com/yegor256/takes  
 JOOQ - https://www.jooq.org/  
-H2 database - http://www.h2database.com/html/main.html  
+H2 database (in memory) - http://www.h2database.com/html/main.html  
