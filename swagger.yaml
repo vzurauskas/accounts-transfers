@@ -61,7 +61,7 @@ paths:
   /transfers:
     post:
       tags:
-        - "user"
+        - "transfers"
       summary: "Execute a transfer between accounts"
       operationId: "createUser"
       produces:
