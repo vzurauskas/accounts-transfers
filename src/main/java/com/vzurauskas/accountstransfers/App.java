@@ -27,15 +27,14 @@ import org.takes.rs.RsText;
 
 public final class App {
 
-    // TODO: idempotency
-    // TODO: separate logic from sql, test real json()
+    // TODO: arrange decorators
     // TODO: validations
-    // TODO: caching
     // TODO: indices
     // TODO: packages
     // TODO: unit tests
     // TODO: error handling
     // TODO: DB
+    // TODO: remove cached
 
     private static final Logger log = LoggerFactory.getLogger(App.class);
 

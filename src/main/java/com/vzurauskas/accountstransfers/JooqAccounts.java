@@ -33,6 +33,7 @@ public final class JooqAccounts implements Accounts {
             .findFirst()
             .map(record -> new JooqAccount(record, db))
             .orElseThrow(() -> new IllegalArgumentException("No account with id=" + id));
+
     }
 
     @Override

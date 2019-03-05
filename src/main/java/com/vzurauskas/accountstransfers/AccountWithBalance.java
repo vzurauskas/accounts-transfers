@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import java.math.BigDecimal;
+import java.util.Map;
 import java.util.UUID;
 import java.util.stream.Stream;
 
@@ -28,8 +29,8 @@ public final class AccountWithBalance implements Account {
     }
 
     @Override
-    public Transfer debit(Account creditor, BigDecimal amount, String currency) {
-        return origin.debit(creditor, amount, currency);
+    public Transfer debit(Account creditor, BigDecimal amount, String currency, Map<String, String> headers) {
+        return origin.debit(creditor, amount, currency, headers);
     }
 
     @Override

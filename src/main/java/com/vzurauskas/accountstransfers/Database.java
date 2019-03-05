@@ -27,7 +27,6 @@ public final class Database {
     private static DataSource dataSource() {
         final BoneCPDataSource src = new BoneCPDataSource();
         src.setDriverClass("org.h2.Driver");
-        //src.setJdbcUrl("jdbc:h2:~/test;DB_CLOSE_DELAY=-1");
         src.setJdbcUrl("jdbc:h2:mem:test;DB_CLOSE_DELAY=-1");
         src.setUser("");
         src.setPassword("");
@@ -45,13 +44,16 @@ public final class Database {
             .execute();
         context.createTableIfNotExists("TRANSFER")
             .column("ID", SQLDataType.UUID)
-            .column("TIMESTAMP", SQLDataType.TIMESTAMP)
-            .column("DEBTOR", SQLDataType.UUID)
-            .column("CREDITOR", SQLDataType.UUID)
-            .column("AMOUNT", SQLDataType.DECIMAL)
-            .column("CURRENCY", SQLDataType.VARCHAR(8))
+            .column("TIMESTAMP", SQLDataType.TIMESTAMP.nullable(false))
+            .column("DEBTOR", SQLDataType.UUID.nullable(false))
+            .column("CREDITOR", SQLDataType.UUID.nullable(false))
+            .column("AMOUNT", SQLDataType.DECIMAL.nullable(false))
+            .column("CURRENCY", SQLDataType.VARCHAR(8).nullable(false))
+            .column("CLIENT_ID", SQLDataType.VARCHAR(40).nullable(false))
+            .column("IDEMPOTENCY_KEY", SQLDataType.VARCHAR(40).nullable(false))
             .constraints(
-                DSL.constraint("PK_TRANSFER").primaryKey("ID")
+                DSL.constraint("PK_TRANSFER").primaryKey("ID"),
+                DSL.constraint("IP_TRANSFER").unique("CLIENT_ID", "IDEMPOTENCY_KEY")
             )
             .execute();
     }

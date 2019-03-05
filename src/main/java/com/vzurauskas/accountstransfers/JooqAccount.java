@@ -4,11 +4,10 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import java.math.BigDecimal;
+import java.util.Map;
 import java.util.UUID;
-import java.util.function.Supplier;
 import java.util.stream.Stream;
 
-import com.vzurauskas.accountstransfers.misc.Cached;
 import com.vzurauskas.accountstransfers.misc.UncheckedMapper;
 import org.jooq.DSLContext;
 import org.jooq.Record;
@@ -18,27 +17,29 @@ public final class JooqAccount implements Account {
 
     private static final UncheckedMapper mapper = new UncheckedMapper();
 
-    private final Supplier<Record> record;
+    private final Record record;
     private final DSLContext db;
 
     public JooqAccount(Record record, DSLContext db) {
-        this.record = new Cached<>(() -> record);
+        this.record = record;
         this.db = db;
     }
 
     @Override
     public UUID id() {
-        return record.get().get("ID", UUID.class);
+        return record.get("ID", UUID.class);
     }
 
     @Override
     public String iban() {
-        return record.get().get("IBAN").toString();
+        return record.get("IBAN").toString();
     }
 
     @Override
-    public Transfer debit(Account creditor, BigDecimal amount, String currency) {
-        return new JooqTransfer(db, this, creditor, amount, currency);
+    public Transfer debit(Account creditor, BigDecimal amount, String currency, Map<String, String> headers) {
+        return new IdempotentTransfer(
+            new JooqTransfer(db, this, creditor, amount, currency, headers)
+        );
     }
 
     @Override
@@ -64,7 +65,7 @@ public final class JooqAccount implements Account {
         ObjectNode account = mapper.objectNode();
         account.put("id", id().toString());
         account.put("iban", iban());
-        account.put("currency", record.get().get("CURRENCY").toString());
+        account.put("currency", record.get("CURRENCY").toString());
         return account;
     }
 }

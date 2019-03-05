@@ -4,6 +4,8 @@ import com.fasterxml.jackson.databind.JsonNode;
 
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 
 import org.slf4j.Logger;
@@ -17,6 +19,7 @@ import org.takes.Request;
 import org.takes.Response;
 import org.takes.Take;
 import org.takes.rq.RqGreedy;
+import org.takes.rq.RqHeaders;
 import org.takes.rs.RsWithBody;
 import org.takes.rs.RsWithStatus;
 import org.takes.rs.RsWithType;
@@ -35,11 +38,12 @@ public final class PostTransfer implements Take {
     @Override
     public Response act(Request req) throws IOException {
         log.info("POST /transfers");
-        Body body = new RqGreedy(req);
-        Transfer transfer = accounts.byIban(text(body, "/debtor")).debit(
-            accounts.byIban(text(body, "/creditor")),
-            new BigDecimal(text(body, "/instructedAmount/amount")),
-            text(body, "/instructedAmount/currency")
+        Request request = new RqGreedy(req);
+        Transfer transfer = accounts.byIban(text(request, "/debtor")).debit(
+            accounts.byIban(text(request, "/creditor")),
+            new BigDecimal(text(request, "/instructedAmount/amount")),
+            text(request, "/instructedAmount/currency"),
+            headers(request)
         );
         transfer.execute();
         return response(transfer);
@@ -55,6 +59,15 @@ public final class PostTransfer implements Take {
             ),
             "application/json"
         );
+    }
+
+    private static Map<String, String> headers(Request request) throws IOException {
+        Map<String, String> map = new HashMap<>(16);
+        RqHeaders.Smart headers = new RqHeaders.Smart(request);
+        for (String name : headers.names()) {
+            map.put(name, headers.single(name));
+        }
+        return map;
     }
 
     private String text(Body req, String path) throws IOException {

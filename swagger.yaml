@@ -63,9 +63,20 @@ paths:
       tags:
         - "transfers"
       summary: "Execute a transfer between accounts"
+      description: "This operation is idempotent. An idempotency key (header 'x-idempotency-key') is used to guard against the execution of duplicate transfers. The request is treated as idempotent if a request from this client (header `x-client-id`) with the same idempotency key has already been executed."
       produces:
         - "application/json"
       parameters:
+        - in: "header"
+          name: "x-client-id"
+          description: "Every request will be processed only once per x-idempotency-key. The Idempotency Key will be valid for 24 hours."
+          required: true
+          type: string
+        - in: "header"
+          name: "x-idempotency-key"
+          description: "Every request will be processed only once per x-idempotency-key. The Idempotency Key will be valid for 24 hours."
+          required: true
+          type: string
         - in: "body"
           name: "body"
           required: true

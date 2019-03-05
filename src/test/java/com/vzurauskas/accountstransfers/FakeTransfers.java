@@ -4,19 +4,25 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Stream;
 
+import org.jooq.exception.DataAccessException;
+
 public final class FakeTransfers {
 
-    private final List<Transaction> transactions;
+    private final List<FakeTransfer> transfers;
 
     public FakeTransfers() {
-        this.transactions = new LinkedList<>();
+        this.transfers = new LinkedList<>();
     }
 
     public void add(FakeTransfer transfer) {
-        transactions.add(transfer.toTransaction());
+        if (transfers.contains(transfer)) {
+            throw new DataAccessException("Idempotency violation");
+        }
+        transfers.add(transfer);
     }
 
     public Stream<Transaction> transactions() {
-        return transactions.stream();
+        return transfers.stream()
+            .map(FakeTransfer::toTransaction);
     }
 }
