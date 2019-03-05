@@ -63,13 +63,11 @@ paths:
       tags:
         - "transfers"
       summary: "Execute a transfer between accounts"
-      operationId: "createUser"
       produces:
         - "application/json"
       parameters:
         - in: "body"
           name: "body"
-          description: "Created user object"
           required: true
           schema:
             $ref: "#/definitions/TransferPost"
