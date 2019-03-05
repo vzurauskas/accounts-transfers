@@ -7,6 +7,8 @@ import java.math.BigDecimal;
 import java.util.UUID;
 import java.util.stream.Stream;
 
+import com.vzurauskas.accountstransfers.misc.UncheckedMapper;
+
 public final class FakeAccount implements Account {
 
     private static final UncheckedMapper mapper = new UncheckedMapper();

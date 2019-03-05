@@ -5,9 +5,9 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;
-import java.util.ArrayList;
 import java.util.UUID;
 
+import com.vzurauskas.accountstransfers.misc.UncheckedMapper;
 import org.jooq.DSLContext;
 import org.jooq.impl.DSL;
 

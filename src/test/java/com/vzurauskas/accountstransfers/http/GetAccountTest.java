@@ -3,13 +3,13 @@ package com.vzurauskas.accountstransfers.http;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.io.IOException;
+import java.util.UUID;
 
 import org.junit.jupiter.api.Test;
 
-import com.vzurauskas.accountstransfers.Account;
 import com.vzurauskas.accountstransfers.Accounts;
 import com.vzurauskas.accountstransfers.FakeAccounts;
-import com.vzurauskas.accountstransfers.UncheckedMapper;
+import com.vzurauskas.accountstransfers.misc.UncheckedMapper;
 import org.takes.rq.RqFake;
 
 final class GetAccountTest {
@@ -20,10 +20,10 @@ final class GetAccountTest {
 
     @Test
     void getsAccountWithNoTransactions() throws IOException {
-        Account account = accounts.add("DE89370400440532666000", "EUR");
+        UUID account = accounts.add("DE89370400440532666000", "EUR");
         assertEquals(
             mapper.objectNode()
-                .put("id", account.id().toString())
+                .put("id", account.toString())
                 .put("iban", "DE89370400440532666000")
                 .put("currency", "EUR")
                 .set(
@@ -35,7 +35,7 @@ final class GetAccountTest {
             mapper.json(
                 new GetAccount(accounts).act(
                     new RqFake(
-                        "GET", "/accounts/" + account.id()
+                        "GET", "/accounts/" + account
                     )
                 ).body()
             )

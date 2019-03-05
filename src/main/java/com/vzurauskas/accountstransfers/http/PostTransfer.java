@@ -11,7 +11,7 @@ import org.slf4j.LoggerFactory;
 
 import com.vzurauskas.accountstransfers.Accounts;
 import com.vzurauskas.accountstransfers.Transfer;
-import com.vzurauskas.accountstransfers.UncheckedMapper;
+import com.vzurauskas.accountstransfers.misc.UncheckedMapper;
 import org.takes.Body;
 import org.takes.Request;
 import org.takes.Response;

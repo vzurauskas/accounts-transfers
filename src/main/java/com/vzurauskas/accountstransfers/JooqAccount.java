@@ -5,8 +5,11 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import java.math.BigDecimal;
 import java.util.UUID;
+import java.util.function.Supplier;
 import java.util.stream.Stream;
 
+import com.vzurauskas.accountstransfers.misc.Cached;
+import com.vzurauskas.accountstransfers.misc.UncheckedMapper;
 import org.jooq.DSLContext;
 import org.jooq.Record;
 import org.jooq.impl.DSL;
@@ -15,22 +18,22 @@ public final class JooqAccount implements Account {
 
     private static final UncheckedMapper mapper = new UncheckedMapper();
 
-    private final UUID id;
+    private final Supplier<Record> record;
     private final DSLContext db;
 
-    public JooqAccount(UUID id, DSLContext db) {
-        this.id = id;
+    public JooqAccount(Record record, DSLContext db) {
+        this.record = new Cached<>(() -> record);
         this.db = db;
     }
 
     @Override
     public UUID id() {
-        return record().get("ID", UUID.class);
+        return record.get().get("ID", UUID.class);
     }
 
     @Override
     public String iban() {
-        return record().get("IBAN").toString();
+        return record.get().get("IBAN").toString();
     }
 
     @Override
@@ -43,8 +46,8 @@ public final class JooqAccount implements Account {
         return db
             .select()
             .from("TRANSFER")
-            .where(DSL.field("TRANSFER.DEBTOR").eq(id))
-            .or(DSL.field("TRANSFER.CREDITOR").eq(id))
+            .where(DSL.field("TRANSFER.DEBTOR").eq(id()))
+            .or(DSL.field("TRANSFER.CREDITOR").eq(id()))
             .fetch().stream()
             .map(
                 record -> new SimpleTransaction(
@@ -59,18 +62,9 @@ public final class JooqAccount implements Account {
     @Override
     public JsonNode json() {
         ObjectNode account = mapper.objectNode();
-        account.put("id", id.toString());
-        account.put("iban", record().get("IBAN").toString());
-        account.put("currency", record().get("CURRENCY").toString());
+        account.put("id", id().toString());
+        account.put("iban", iban());
+        account.put("currency", record.get().get("CURRENCY").toString());
         return account;
-    }
-
-    private Record record() {
-        return db
-            .select()
-            .from("ACCOUNT")
-            .where(DSL.field("ACCOUNT.ID").eq(id))
-            .fetch().stream()
-            .findFirst().orElseThrow(() -> new IllegalArgumentException("No account with id=" + id));
     }
 }

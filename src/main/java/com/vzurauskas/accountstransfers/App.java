@@ -27,7 +27,6 @@ import org.takes.rs.RsText;
 
 public final class App {
 
-    // TODO: readme
     // TODO: idempotency
     // TODO: separate logic from sql, test real json()
     // TODO: validations

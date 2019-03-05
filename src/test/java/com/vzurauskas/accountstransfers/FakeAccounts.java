@@ -15,10 +15,10 @@ public final class FakeAccounts implements Accounts {
     }
 
     @Override
-    public Account add(String iban, String currency) {
+    public UUID add(String iban, String currency) {
         Account account = new FakeAccount(UUID.randomUUID(), iban, currency, transfers);
         accounts.add(account);
-        return account;
+        return account.id();
     }
 
     @Override

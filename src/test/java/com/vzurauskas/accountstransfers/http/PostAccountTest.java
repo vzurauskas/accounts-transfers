@@ -13,7 +13,7 @@ import org.junit.jupiter.api.Test;
 import com.vzurauskas.accountstransfers.Accounts;
 import com.vzurauskas.accountstransfers.Amount;
 import com.vzurauskas.accountstransfers.FakeAccounts;
-import com.vzurauskas.accountstransfers.UncheckedMapper;
+import com.vzurauskas.accountstransfers.misc.UncheckedMapper;
 import org.takes.rq.RqFake;
 
 final class PostAccountTest {

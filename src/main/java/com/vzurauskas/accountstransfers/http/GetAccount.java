@@ -8,7 +8,7 @@ import org.slf4j.LoggerFactory;
 
 import com.vzurauskas.accountstransfers.AccountWithBalance;
 import com.vzurauskas.accountstransfers.Accounts;
-import com.vzurauskas.accountstransfers.UncheckedMapper;
+import com.vzurauskas.accountstransfers.misc.UncheckedMapper;
 import org.takes.Request;
 import org.takes.Response;
 import org.takes.Take;

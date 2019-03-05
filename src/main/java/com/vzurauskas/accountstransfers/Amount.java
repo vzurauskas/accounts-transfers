@@ -6,6 +6,8 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
 
+import com.vzurauskas.accountstransfers.misc.UncheckedMapper;
+
 public final class Amount {
 
     private static final UncheckedMapper mapper = new UncheckedMapper();

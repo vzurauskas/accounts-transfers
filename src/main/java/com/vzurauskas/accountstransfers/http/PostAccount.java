@@ -11,7 +11,7 @@ import org.slf4j.LoggerFactory;
 import com.vzurauskas.accountstransfers.Account;
 import com.vzurauskas.accountstransfers.AccountWithBalance;
 import com.vzurauskas.accountstransfers.Accounts;
-import com.vzurauskas.accountstransfers.UncheckedMapper;
+import com.vzurauskas.accountstransfers.misc.UncheckedMapper;
 import org.takes.Body;
 import org.takes.Request;
 import org.takes.Response;
@@ -36,8 +36,10 @@ public final class PostAccount implements Take {
     public Response act(Request req) throws IOException {
         log.info("POST /accounts");
         Body body = new RqGreedy(req);
-        return response(accounts.add(
-            text(body, "iban"), text(body, "currency"))
+        return response(
+            accounts.byId(
+                accounts.add(text(body, "iban"), text(body, "currency"))
+            )
         );
     }
 
