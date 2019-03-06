@@ -9,7 +9,11 @@ import org.slf4j.LoggerFactory;
 import com.vzurauskas.accountstransfers.http.GetAccount;
 import com.vzurauskas.accountstransfers.http.PostAccount;
 import com.vzurauskas.accountstransfers.http.PostTransfer;
+import com.vzurauskas.accountstransfers.jooq.Database;
+import com.vzurauskas.accountstransfers.jooq.JooqAccounts;
+
 import org.jooq.DSLContext;
+
 import org.takes.Response;
 import org.takes.facets.fallback.Fallback;
 import org.takes.facets.fallback.FbChain;
@@ -26,15 +30,6 @@ import org.takes.misc.Opt;
 import org.takes.rs.RsText;
 
 public final class App {
-
-    // TODO: arrange decorators
-    // TODO: validations
-    // TODO: indices
-    // TODO: packages
-    // TODO: unit tests
-    // TODO: error handling
-    // TODO: DB
-    // TODO: remove cached
 
     private static final Logger log = LoggerFactory.getLogger(App.class);
 

@@ -1,10 +1,11 @@
-package com.vzurauskas.accountstransfers;
+package com.vzurauskas.accountstransfers.jooq;
 
 import java.sql.SQLException;
 
 import javax.sql.DataSource;
 
 import com.jolbox.bonecp.BoneCPDataSource;
+
 import org.jooq.DSLContext;
 import org.jooq.SQLDialect;
 import org.jooq.impl.DSL;

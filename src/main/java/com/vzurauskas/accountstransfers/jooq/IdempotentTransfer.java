@@ -1,9 +1,11 @@
-package com.vzurauskas.accountstransfers;
+package com.vzurauskas.accountstransfers.jooq;
 
 import com.fasterxml.jackson.databind.JsonNode;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import com.vzurauskas.accountstransfers.Transfer;
 
 import org.jooq.exception.DataAccessException;
 

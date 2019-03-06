@@ -19,6 +19,19 @@ public final class AccountWithBalance implements Account {
     }
 
     @Override
+    public JsonNode json() {
+        return ((ObjectNode) origin.json().deepCopy())
+            .set("balance", balance().json());
+    }
+
+    private Amount balance() {
+        return origin.transactions()
+            .map(transaction -> transaction.amountFor(this))
+            .reduce(Amount::plus)
+            .orElse(new Amount(BigDecimal.ZERO, DEFAULT_CURRENCY));
+    }
+
+    @Override
     public UUID id() {
         return origin.id();
     }
@@ -36,18 +49,5 @@ public final class AccountWithBalance implements Account {
     @Override
     public Stream<Transaction> transactions() {
         return origin.transactions();
-    }
-
-    @Override
-    public JsonNode json() {
-        return ((ObjectNode) origin.json().deepCopy())
-            .set("balance", balance().json());
-    }
-
-    private Amount balance() {
-        return origin.transactions()
-            .map(transaction -> transaction.amountFor(this))
-            .reduce(Amount::plus)
-            .orElse(new Amount(BigDecimal.ZERO, DEFAULT_CURRENCY));
     }
 }

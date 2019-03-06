@@ -6,7 +6,6 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import java.math.BigDecimal;
 import java.util.Map;
 import java.util.Objects;
-import java.util.UUID;
 
 import com.vzurauskas.accountstransfers.misc.UncheckedMapper;
 

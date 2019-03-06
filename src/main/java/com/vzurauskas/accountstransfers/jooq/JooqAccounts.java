@@ -1,7 +1,10 @@
-package com.vzurauskas.accountstransfers;
+package com.vzurauskas.accountstransfers.jooq;
 
 import java.util.Optional;
 import java.util.UUID;
+
+import com.vzurauskas.accountstransfers.Account;
+import com.vzurauskas.accountstransfers.Accounts;
 
 import org.jooq.DSLContext;
 import org.jooq.impl.DSL;

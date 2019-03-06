@@ -8,6 +8,7 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.stream.Stream;
 
+import com.vzurauskas.accountstransfers.jooq.IdempotentTransfer;
 import com.vzurauskas.accountstransfers.misc.UncheckedMapper;
 
 public final class FakeAccount implements Account {

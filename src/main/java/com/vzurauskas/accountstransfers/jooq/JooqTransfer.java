@@ -1,4 +1,4 @@
-package com.vzurauskas.accountstransfers;
+package com.vzurauskas.accountstransfers.jooq;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
@@ -8,7 +8,11 @@ import java.time.OffsetDateTime;
 import java.util.Map;
 import java.util.UUID;
 
+import com.vzurauskas.accountstransfers.Account;
+import com.vzurauskas.accountstransfers.Amount;
+import com.vzurauskas.accountstransfers.Transfer;
 import com.vzurauskas.accountstransfers.misc.UncheckedMapper;
+
 import org.jooq.DSLContext;
 import org.jooq.impl.DSL;
 
