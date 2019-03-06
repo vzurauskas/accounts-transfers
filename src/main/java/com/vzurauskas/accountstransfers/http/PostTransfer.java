@@ -11,6 +11,8 @@ import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.vzurauskas.accountstransfers.Account;
+import com.vzurauskas.accountstransfers.AccountWithBalance;
 import com.vzurauskas.accountstransfers.Accounts;
 import com.vzurauskas.accountstransfers.Transfer;
 import com.vzurauskas.accountstransfers.misc.UncheckedMapper;
@@ -39,26 +41,22 @@ public final class PostTransfer implements Take {
     public Response act(Request req) throws IOException {
         log.info("POST /transfers");
         Request request = new RqGreedy(req);
-        Transfer transfer = accounts.byIban(text(request, "/debtor")).debit(
-            accounts.byIban(text(request, "/creditor")),
+        Optional<Account> debtor = accounts.byIban(text(request, "/debtor"));
+        Optional<Account> creditor = accounts.byIban(text(request, "/creditor"));
+        if (!debtor.isPresent()) {
+            return new HttpBadRequest("No account with IBAN=" + text(request, "/debtor"));
+        }
+        if (!creditor.isPresent()) {
+            return new HttpBadRequest("No account with IBAN=" + text(request, "/creditor"));
+        }
+        Transfer transfer = debtor.get().debit(
+            creditor.get(),
             new BigDecimal(text(request, "/instructedAmount/amount")),
             text(request, "/instructedAmount/currency"),
             headers(request)
         );
         transfer.execute();
-        return response(transfer);
-    }
-
-    private Response response(Transfer transfer) {
-        return new RsWithType(
-            new RsWithStatus(
-                new RsWithBody(
-                    mapper.bytes(transfer.json())
-                ),
-                201
-            ),
-            "application/json"
-        );
+        return new HttpOk(transfer.json());
     }
 
     private static Map<String, String> headers(Request request) throws IOException {

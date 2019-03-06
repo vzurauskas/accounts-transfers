@@ -2,6 +2,7 @@ package com.vzurauskas.accountstransfers;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 public final class FakeAccounts implements Accounts {
@@ -22,18 +23,16 @@ public final class FakeAccounts implements Accounts {
     }
 
     @Override
-    public Account byId(UUID id) {
+    public Optional<Account> byId(UUID id) {
         return accounts.stream()
             .filter(account -> account.id().equals(id))
-            .findFirst()
-            .orElseThrow(() -> new IllegalArgumentException("No account with id=" + id));
+            .findFirst();
     }
 
     @Override
-    public Account byIban(String iban) {
+    public Optional<Account> byIban(String iban) {
         return accounts.stream()
             .filter(account -> account.iban().equals(iban))
-            .findFirst()
-            .orElseThrow(() -> new IllegalArgumentException("No account with id=" + iban));
+            .findFirst();
     }
 }

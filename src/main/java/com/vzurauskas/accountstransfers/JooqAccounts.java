@@ -1,5 +1,6 @@
 package com.vzurauskas.accountstransfers;
 
+import java.util.Optional;
 import java.util.UUID;
 
 import org.jooq.DSLContext;
@@ -24,27 +25,25 @@ public final class JooqAccounts implements Accounts {
     }
 
     @Override
-    public Account byId(UUID id) {
+    public Optional<Account> byId(UUID id) {
         return db
             .select()
             .from("ACCOUNT")
             .where(DSL.field("ACCOUNT.ID").eq(id))
             .fetch().stream()
             .findFirst()
-            .map(record -> new JooqAccount(record, db))
-            .orElseThrow(() -> new IllegalArgumentException("No account with id=" + id));
+            .map(record -> new JooqAccount(record, db));
 
     }
 
     @Override
-    public Account byIban(String iban) {
+    public Optional<Account> byIban(String iban) {
         return db
             .select()
             .from("ACCOUNT")
             .where(DSL.field("ACCOUNT.IBAN").eq(iban))
             .fetch().stream()
             .findFirst()
-            .map(record -> new JooqAccount(record, db))
-            .orElseThrow(() -> new IllegalArgumentException("No account with iban=" + iban));
+            .map(record -> new JooqAccount(record, db));
     }
 }

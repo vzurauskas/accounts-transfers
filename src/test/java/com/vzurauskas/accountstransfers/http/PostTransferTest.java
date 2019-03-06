@@ -1,10 +1,8 @@
 package com.vzurauskas.accountstransfers.http;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import java.io.IOException;
 import java.math.BigDecimal;
@@ -86,11 +84,11 @@ final class PostTransferTest {
 
         assertEquals(
             new Amount(new BigDecimal("-30.00"), "EUR").json(),
-            new AccountWithBalance(accounts.byIban("debtorIban")).json().get("balance")
+            new AccountWithBalance(accounts.byIban("debtorIban").get()).json().get("balance")
         );
         assertEquals(
             new Amount(new BigDecimal("30.00"), "EUR").json(),
-            new AccountWithBalance(accounts.byIban("creditorIban")).json().get("balance")
+            new AccountWithBalance(accounts.byIban("creditorIban").get()).json().get("balance")
         );
     }
 
@@ -123,15 +121,15 @@ final class PostTransferTest {
             )
         );
 
-        assertEquals(1L, accounts.byIban("debtorIban").transactions().count());
-        assertEquals(1L, accounts.byIban("creditorIban").transactions().count());
+        assertEquals(1L, accounts.byIban("debtorIban").get().transactions().count());
+        assertEquals(1L, accounts.byIban("creditorIban").get().transactions().count());
         assertEquals(
             new Amount(new BigDecimal("-10.00"), "EUR").json(),
-            new AccountWithBalance(accounts.byIban("debtorIban")).json().get("balance")
+            new AccountWithBalance(accounts.byIban("debtorIban").get()).json().get("balance")
         );
         assertEquals(
             new Amount(new BigDecimal("10.00"), "EUR").json(),
-            new AccountWithBalance(accounts.byIban("creditorIban")).json().get("balance")
+            new AccountWithBalance(accounts.byIban("creditorIban").get()).json().get("balance")
         );
     }
 }
