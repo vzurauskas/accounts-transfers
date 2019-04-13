@@ -12,15 +12,19 @@ import org.junit.jupiter.api.Test;
 
 import com.vzurauskas.accountstransfers.Accounts;
 import com.vzurauskas.accountstransfers.Amount;
-import com.vzurauskas.accountstransfers.FakeAccounts;
+import com.vzurauskas.accountstransfers.jooq.FakeDatabase;
+import com.vzurauskas.accountstransfers.jooq.JooqAccounts;
 import com.vzurauskas.accountstransfers.misc.UncheckedMapper;
+import org.jooq.DSLContext;
 import org.takes.rq.RqFake;
 
 final class PostAccountTest {
 
     private final UncheckedMapper mapper = new UncheckedMapper();
 
-    private final Accounts accounts = new FakeAccounts();
+    private final Accounts accounts = new JooqAccounts(
+        new FakeDatabase().connect()
+    );
 
     @Test
     void postsAccount() throws IOException {

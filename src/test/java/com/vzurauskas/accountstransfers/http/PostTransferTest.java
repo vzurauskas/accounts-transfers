@@ -12,7 +12,8 @@ import org.junit.jupiter.api.Test;
 import com.vzurauskas.accountstransfers.AccountWithBalance;
 import com.vzurauskas.accountstransfers.Accounts;
 import com.vzurauskas.accountstransfers.Amount;
-import com.vzurauskas.accountstransfers.FakeAccounts;
+import com.vzurauskas.accountstransfers.jooq.FakeDatabase;
+import com.vzurauskas.accountstransfers.jooq.JooqAccounts;
 import com.vzurauskas.accountstransfers.misc.UncheckedMapper;
 import org.takes.rq.RqFake;
 import org.takes.rq.RqWithHeaders;
@@ -21,7 +22,9 @@ final class PostTransferTest {
 
     private final UncheckedMapper mapper = new UncheckedMapper();
 
-    private final Accounts accounts = new FakeAccounts();
+    private final Accounts accounts = new JooqAccounts(
+        new FakeDatabase().connect()
+    );
 
     @Test
     void displaysTransferInResponse() throws IOException {
@@ -40,7 +43,11 @@ final class PostTransferTest {
             request,
             mapper.json(
                 new PostTransfer(accounts).act(
-                    new RqFake("POST", "/transfers", mapper.string(request))
+                    new RqWithHeaders(
+                        new RqFake("POST", "/transfers", mapper.string(request)),
+                        "x-client-id: client",
+                        "x-idempotency-key: abc1"
+                    )
                 ).body()
             )
         );
