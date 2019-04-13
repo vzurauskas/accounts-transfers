@@ -10,7 +10,7 @@ Demo object oriented web application: create accounts and transfer money between
 3. Paste https://raw.githubusercontent.com/vzurauskas/accounts-transfers/master/swagger.yaml
 
 ### POST /transfers idempotency
-N.B. POST /transfers operation is idempotent. An idempotency key (header 'x-idempotency-key') is used to guard against the execution of duplicate transfers. The request is treated as idempotent if a request from this client (header x-client-id) with the same idempotency key has already been executed.
+N.B. POST /transfers operation is idempotent. An idempotency key (header "x-idempotency-key") is used to guard against the execution of duplicate transfers. The request is treated as idempotent if a request from the same client (header "x-client-id") with the same idempotency key has already been executed.
 
 ## Build and run
 mvn clean install  
