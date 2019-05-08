@@ -1,5 +1,6 @@
 [![EO principles respected here](http://www.elegantobjects.org/badge.svg)](http://www.elegantobjects.org)
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](https://github.com/vzurauskas/accounts-transfers/blob/master/LICENSE)
+![nullfree status](https://iwillfailyou.com/nullfree/vzurauskas/accounts-transfers)
 
 # Accounts and Transfers
 Demo object oriented web application: create accounts and transfer money between them via a RESTful API.

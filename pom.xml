@@ -16,7 +16,7 @@
 
     <dependencies>
 
-    <!-- Main -->
+        <!-- Main -->
 
         <dependency>
             <groupId>org.takes</groupId>
@@ -76,7 +76,7 @@
             <scope>runtime</scope>
         </dependency>
 
-    <!-- Tests -->
+        <!-- Tests -->
 
         <dependency>
             <groupId>org.junit.jupiter</groupId>
@@ -114,6 +114,11 @@
                         <version>1.2.0</version>
                     </dependency>
                 </dependencies>
+            </plugin>
+            <plugin>
+                <groupId>com.nikialeksey</groupId>
+                <artifactId>nullfree-maven-plugin</artifactId>
+                <version>1.0.0</version>
             </plugin>
         </plugins>
     </build>
